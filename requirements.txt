@@ -10,10 +10,12 @@ attrs==25.3.0
 backoff==2.2.1
 bcrypt==4.3.0
 beautifulsoup4==4.13.4
+black==25.1.0
 build==1.2.2.post1
 cachetools==5.5.2
 certifi==2025.7.14
 cffi==1.17.1
+cfgv==3.4.0
 charset-normalizer==3.4.2
 chromadb==1.0.15
 click==8.2.1
@@ -24,6 +26,7 @@ cryptography==45.0.5
 cycler==0.12.1
 dataclasses-json==0.6.7
 Deprecated==1.2.18
+distlib==0.4.0
 distro==1.9.0
 durationpy==0.10
 ecdsa==0.19.1
@@ -53,10 +56,12 @@ httpx==0.28.1
 httpx-sse==0.4.1
 huggingface-hub==0.34.2
 humanfriendly==10.0
+identify==2.6.12
 idna==3.10
 importlib_metadata==8.7.0
 importlib_resources==6.5.2
 iniconfig==2.1.0
+isort==6.0.1
 Jinja2==3.1.6
 jiter==0.10.0
 joblib==1.5.1
@@ -88,6 +93,7 @@ mypy_extensions==1.1.0
 nest-asyncio==1.6.0
 networkx==3.5
 nltk==3.9.1
+nodeenv==1.9.1
 numpy==2.2.6
 oauthlib==3.3.1
 olefile==0.47
@@ -107,13 +113,16 @@ orjson==3.11.1
 overrides==7.7.0
 packaging==25.0
 pandas==2.3.1
+pathspec==0.12.1
 pdf2image==1.17.0
 pdfminer.six==20250506
 pi_heif==1.0.0
 pikepdf==9.10.2
 pillow==11.3.0
+platformdirs==4.3.8
 pluggy==1.6.0
 posthog==5.4.0
+pre_commit==4.2.0
 propcache==0.3.2
 proto-plus==1.26.1
 protobuf==6.31.1
@@ -184,6 +193,7 @@ unstructured-inference==1.0.5
 unstructured.pytesseract==0.3.15
 urllib3==2.5.0
 uvicorn==0.35.0
+virtualenv==20.32.0
 watchfiles==1.1.0
 webencodings==0.5.1
 websocket-client==1.8.0
