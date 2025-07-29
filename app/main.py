@@ -1,13 +1,15 @@
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from langchain_openai import ChatOpenAI
-from pydantic import BaseModel
-from app.vectorstore import vector_search
-from app.models import QueryRequest, QueryResponse
-from .auth import fake_users_db
-from dotenv import load_dotenv
-from jose import jwt, JWTError
 import os
+
+from dotenv import load_dotenv
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from langchain_openai import ChatOpenAI
+
+from app.models import QueryRequest, QueryResponse
+from app.vectorstore import vector_search
+
+from .auth import fake_users_db
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -24,8 +26,10 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
 
+
 def create_access_token(data: dict):
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+
 
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
@@ -38,6 +42,7 @@ def verify_token(token: str = Depends(oauth2_scheme)):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+
 # --- Token Endpoint ---
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -49,11 +54,10 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     access_token = create_access_token({"sub": user["username"]})
     return {"access_token": access_token, "token_type": "bearer"}
 
+
 # --- LLM Init ---
-llm = ChatOpenAI(
-    model="gpt-3.5-turbo",
-    openai_api_key=api_key
-)
+llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=api_key)
+
 
 # --- Protected RAG Endpoint ---
 @app.post("/ask", response_model=QueryResponse)
@@ -71,5 +75,5 @@ async def ask_ai(request: QueryRequest, token_data=Depends(verify_token)):
 
     return QueryResponse(
         answer=result.content,
-        matched_docs=[d.page_content for d in docs]  # ✅ FIX: extract text
+        matched_docs=[d.page_content for d in docs],  # ✅ FIX: extract text
     )

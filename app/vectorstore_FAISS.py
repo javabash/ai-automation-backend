@@ -1,11 +1,12 @@
 # app/vectorstore.py
 
 import os
+
+from dotenv import load_dotenv
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import DirectoryLoader, TextLoader
-from dotenv import load_dotenv
 
 # ✅ Load environment (if not already loaded elsewhere)
 load_dotenv()
@@ -24,6 +25,7 @@ docs = splitter.split_documents(raw_docs)
 
 # ✅ Create or reuse a FAISS vector store
 db = FAISS.from_documents(docs, embeddings)
+
 
 # ✅ Simple vector search function
 def vector_search(query: str) -> list[str]:
