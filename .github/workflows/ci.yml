@@ -1,7 +1,6 @@
 # .github/workflows/ci.yml
 name: CI
 
-# Trigger on pushes & PRs to any branch
 on:
   push:
   pull_request:
@@ -12,37 +11,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Check out your code
       - uses: actions/checkout@v4
 
-      # 2) Set up Python 3.11
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3) Install your dependencies
+      # 🚀 Enable pip cache
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov httpx
 
-      # 3.1) Expose your app module to pytest via PYTHONPATH
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
-      # 4) Run pytest against your tests/ folder
       - name: Run pytest
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           pytest tests/ --maxfail=1 --disable-warnings --cov=app --cov-report=xml
 
-      # 5) Upload coverage as an artifact
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage.xml
-
