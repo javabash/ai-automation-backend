@@ -225,7 +225,3 @@ GitHub: [@javabash](https://github.com/javabash)
 **MIT** — do whatever you want, just don't forget to build cool stuff.
 
 ---
-
-Want to add badges, usage screenshots, or frontend/API integration tips? Just ask!
-
-Let me know if you want this in Markdown file format, or if you want a “quickstart” or “troubleshooting” section added!
