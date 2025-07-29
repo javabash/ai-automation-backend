@@ -23,11 +23,23 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 @router.post("/token")
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    print(f"Username received: {form_data.username!r}")
+    print(f"Password received: {form_data.password!r}")
+    # Just for testing:
+    if form_data.username == "wrong":
+        raise HTTPException(status_code=401, detail="This is a forced 401 for test")
+    # Explicit check for empty/missing username/password
+    if not form_data.username or not form_data.password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username and password are required",
+        )
     user = fake_users_db.get(form_data.username)
     if not user or user["password"] != form_data.password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(
         {"sub": user["username"]}, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

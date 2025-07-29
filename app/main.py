@@ -48,9 +48,18 @@ def verify_token(token: str = Depends(oauth2_scheme)):
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     print("Username (from form):", form_data.username)
     print("Password (from form):", form_data.password)
+    if not form_data.username or not form_data.password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username and password are required",
+        )
     user = fake_users_db.get(form_data.username)
     if not user or user["password"] != form_data.password:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     access_token = create_access_token({"sub": user["username"]})
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -62,6 +71,8 @@ llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=api_key)
 # --- Protected RAG Endpoint ---
 @app.post("/ask", response_model=QueryResponse)
 async def ask_ai(request: QueryRequest, token_data=Depends(verify_token)):
+    if not request.question or not request.question.strip():
+        raise HTTPException(status_code=422, detail="Question cannot be empty")
     docs = vector_search(request.question)
 
     print("\n\n🔍 MATCHED DOCS DEBUG:")

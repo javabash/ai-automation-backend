@@ -6,30 +6,32 @@ A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chr
 
 ## 🚀 Features
 
-- 🔍 Vector Search Engine using Chroma
-- 📄 Document Ingestion (.txt, .pdf supported)
-- 🧠 Retrieval-Augmented Generation with OpenAI GPT-3.5
-- ⚡ FastAPI backend with interactive Swagger UI
-- 🔐 Environment-based API key security
-- 📦 Modular Python structure ready for production
+- 🔍 **Vector Search Engine** using Chroma
+- 📄 **Document Ingestion** (.txt, .pdf supported)
+- 🧠 **Retrieval-Augmented Generation** with OpenAI GPT-3.5
+- ⚡ **FastAPI backend** with interactive Swagger UI
+- 🔐 **Environment-based API key security**
+- 🧪 **Production-grade Pytest suite** covering all endpoints and edge cases
+- 🚦 **Standard RESTful error handling** (400, 401, 422, 200)
+- 📦 **Modular Python structure** ready for production
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer       | Technology                       |
-|-------------|-----------------------------------|
-| API Server  | [FastAPI](https://fastapi.tiangolo.com)     |
-| LLM         | [OpenAI GPT-3.5](https://platform.openai.com) |
-| Embeddings  | `OpenAIEmbeddings` via `langchain-openai`   |
-| Vector DB   | [ChromaDB](https://www.trychroma.com)        |
-| Loaders     | `langchain_community.document_loaders`       |
+| Layer      | Technology                              |
+|------------|-----------------------------------------|
+| API Server | FastAPI                                 |
+| LLM        | OpenAI GPT-3.5                          |
+| Embeddings | OpenAIEmbeddings via langchain-openai   |
+| Vector DB  | ChromaDB                                |
+| Loaders    | langchain_community.document_loaders    |
 
 ---
 
 ## 📂 Folder Structure
 
-```plaintext
+```
 ai-automation-backend/
 │
 ├── app/
@@ -38,6 +40,7 @@ ai-automation-backend/
 │   ├── vectorstore.py    # Vector store logic
 │   └── docs/             # Drop your .txt and .pdf files here
 │
+├── tests/                # 🧪 Pytest API contract tests
 ├── .env                  # Contains your OPENAI_API_KEY
 ├── .gitignore
 ├── requirements.txt
@@ -48,52 +51,80 @@ ai-automation-backend/
 
 ## ⚙️ Getting Started
 
-### 1. Clone the repo
+1. **Clone the repo**
+  ```bash
+  git clone https://github.com/javabash/ai-automation-backend.git
+  cd ai-automation-backend
+  ```
+
+2. **Set up a virtual environment**
+  ```bash
+  python -m venv .venv
+  ```
+  Activate it:
+
+  **Windows**
+  ```bash
+  .venv\Scripts\activate
+  ```
+
+  **Mac/Linux**
+  ```bash
+  source .venv/bin/activate
+  ```
+
+3. **Install dependencies**
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+4. **Create a `.env` file in the root**
+
+  Add your OpenAI API key:
+  ```ini
+  OPENAI_API_KEY=your_openai_key_here
+  ```
+
+5. **Start the server**
+  ```bash
+  uvicorn app.main:app --reload
+  ```
+
+6. **Open your browser**
+
+  Visit: [http://localhost:8000/docs](http://localhost:8000/docs)  
+  Use the Swagger UI to query your documents.
+
+---
+
+## 🧪 API Testing & Quality
+
+All endpoints are covered by a robust Pytest suite:
+
+- Auth (happy/negative paths)
+- Permissions (future-proofed for roles)
+- RAG/LLM endpoints (happy/edge/error cases)
+- Error handling (bad login, missing/empty inputs, etc.)
+
+Test suite checks status codes and API contracts:
+
+- **401 Unauthorized** for invalid login
+- **400 Bad Request** for missing/blank fields
+- **422 Unprocessable Entity** for empty questions
+- **200 OK** for successful calls
+
+**CI/CD ready:**
+
+- Tests pass locally and in GitHub Actions
+- Every change must be testable, reproducible, and contract-aligned
+
+---
+
+## 🏃‍♂️ Run Tests
 
 ```bash
-git clone https://github.com/javabash/ai-automation-backend.git
-cd ai-automation-backend
+pytest -v tests/
 ```
-
-### 2. Set up a virtual environment
-
-```bash
-python -m venv .venv
-```
-Activate it:
-
-- **Windows**
-    ```bash
-    .venv\Scripts\activate
-    ```
-- **Mac/Linux**
-    ```bash
-    source .venv/bin/activate
-    ```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Create a `.env` file in the root
-
-Add your OpenAI API key:
-```
-OPENAI_API_KEY=your_openai_key_here
-```
-
-### 5. Start the server
-
-```bash
-uvicorn app.main:app --reload
-```
-
-### 6. Open your browser
-
-Visit: [http://localhost:8000/docs](http://localhost:8000/docs)  
-Use the Swagger UI to query your documents.
 
 ---
 
@@ -112,7 +143,7 @@ No manual indexing required.
 
 ## ❓ Ask Your Data
 
-Example query:
+**Example query:**
 ```json
 {
   "question": "What is a vector database and why is it useful?"
@@ -126,15 +157,35 @@ The app will:
 3. Send the prompt to OpenAI
 4. Return an intelligent answer + the source context
 
-Example response:
+**Example response:**
 ```json
 {
   "answer": "Vector databases improve performance for AI by enabling similarity search and handling high-dimensional data efficiently.",
   "matched_docs": [
-    "Beginner’s Guide to Vector Databases -AI by Hand",
-    "FastAPI Type Hints and Swagger UI Integration"
+  "Beginner’s Guide to Vector Databases -AI by Hand",
+  "FastAPI Type Hints and Swagger UI Integration"
   ]
 }
+```
+
+---
+
+## 🚦 Error Handling & API Contract
+
+All API endpoints follow standard REST conventions:
+
+| Status Code | Scenario                                 |
+|-------------|------------------------------------------|
+| 200         | Success                                  |
+| 400         | Missing required fields (e.g. blank login)|
+| 401         | Invalid credentials or unauthorized      |
+| 422         | Invalid input (e.g. empty question)      |
+
+Any contract change will cause tests to fail—preventing accidental regressions.
+
+All errors return a clear JSON message:
+```json
+{ "detail": "Error message here" }
 ```
 
 ---
@@ -158,12 +209,14 @@ This is just the backend. Future upgrades could include:
 AI-Enhanced SDET & Automation Engineer  
 GitHub: [@javabash](https://github.com/javabash)
 
+---
+
 ## 📘 Acknowledgments
 
-- [LangChain](https://github.com/langchain-ai/langchain)
-- [Chroma](https://www.trychroma.com)
-- [OpenAI](https://openai.com)
-- [FastAPI](https://fastapi.tiangolo.com)
+- LangChain
+- Chroma
+- OpenAI
+- FastAPI
 
 ---
 
@@ -173,4 +226,6 @@ GitHub: [@javabash](https://github.com/javabash)
 
 ---
 
-*Let me know if you want to generate badges, include usage screenshots, or add instructions for frontend integration.*
+Want to add badges, usage screenshots, or frontend/API integration tips? Just ask!
+
+Let me know if you want this in Markdown file format, or if you want a “quickstart” or “troubleshooting” section added!
