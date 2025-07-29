@@ -1,0 +1,27 @@
+# Lint/format/test
+black==25.1.0
+isort==6.0.1
+pytest==8.4.1
+pytest-asyncio==1.1.0
+pre_commit==4.2.0
+mypy_extensions==1.1.0
+pluggy==1.6.0
+iniconfig==2.1.0
+build==1.2.2.post1
+
+# CI/CD tooling
+virtualenv==20.32.0
+nodeenv==1.9.1
+shellingham==1.5.4
+
+# Dev/infra support
+distlib==0.4.0
+cfgv==3.4.0
+identify==2.6.12
+pathspec==0.12.1
+watchfiles==1.1.0
+
+# Docs (if Sphinx or similar used)
+# sphinx
+
+# (Add others you use for dev, not needed in prod)

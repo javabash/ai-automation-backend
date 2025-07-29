@@ -1,0 +1,80 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+.env/
+venv/
+.venv/
+*.egg-info/
+*.egg
+*.pkl
+*.h5
+*.npy
+
+# Version control
+.git/
+.gitignore
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Editors/IDEs
+.idea/
+.vscode/
+
+# Testing
+tests/
+.coverage
+htmlcov/
+.coverage.*
+.pytest_cache/
+.tox/
+
+# Docs & configs
+*.md
+*.rst
+*.yml
+*.yaml
+
+# Build artifacts
+build/
+dist/
+*.log
+
+# Data files
+*.db
+*.sqlite3
+*.csv
+*.tsv
+*.bak
+*.tar
+*.gz
+*.zip
+*.json
+*.xml
+
+# Node/JS artifacts (if any frontend or mixed repo)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+pnpm-lock.yaml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous large/binary files
+*.mp4
+*.mov
+*.avi
+*.mp3
+*.wav
+*.jpg
+*.jpeg
+*.png
+*.svg
