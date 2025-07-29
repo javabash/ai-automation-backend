@@ -4,6 +4,7 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 from app.vectorstore import vector_search
 from app.models import QueryRequest, QueryResponse
+from .auth import fake_users_db
 from dotenv import load_dotenv
 from jose import jwt, JWTError
 import os
@@ -22,11 +23,6 @@ ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
-
-# --- Demo User DB (for PoC only) ---
-fake_users_db = {
-    DEMO_USER: {"username": DEMO_USER, "password": DEMO_PASS}
-}
 
 def create_access_token(data: dict):
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
