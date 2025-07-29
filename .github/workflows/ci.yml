@@ -28,6 +28,10 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov httpx
 
+      # 3.1) Expose your app module to pytest via PYTHONPATH
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
       # 4) Run pytest against your tests/ folder
       - name: Run pytest
         env:
@@ -41,3 +45,4 @@ jobs:
         with:
           name: coverage-report
           path: coverage.xml
+
