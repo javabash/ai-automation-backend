@@ -2,6 +2,9 @@
 
 A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chroma**, and **OpenAI**. Designed to ingest your own documents (PDFs, TXT) and let you query them using LLMs with real-time answers.
 
+![CI](https://github.com/javabash/ai-automation-backend/actions/workflows/ci.yml/badge.svg?branch=main)
+[![codecov](https://codecov.io/gh/javabash/ai-automation-backend/branch/main/graph/badge.svg)](https://codecov.io/gh/javabash/ai-automation-backend)
+
 ---
 
 ## 🚀 Features
