@@ -1,6 +1,6 @@
 # 🤖 AI Automation Backend
 
-A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chroma**, and **OpenAI**. Designed to ingest your own documents (PDFs, TXT) and let you query them using LLMs with real-time answers.
+A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chroma**, and **OpenAI**—now with **JWT authentication**, **multi-retriever modularity**, and a modern **Next.js + TypeScript + Tailwind** frontend. Designed to ingest your own documents (PDFs, TXT) and let you query them using LLMs with real-time answers and robust source attribution. Production-ready for demos, portfolios, or client work.
 
 ![CI](https://github.com/javabash/ai-automation-backend/actions/workflows/ci.yml/badge.svg?branch=main)
 [![codecov](https://codecov.io/gh/javabash/ai-automation-backend/branch/main/graph/badge.svg)](https://codecov.io/gh/javabash/ai-automation-backend)
@@ -9,14 +9,18 @@ A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chr
 
 ## 🚀 Features
 
-- 🔍 **Vector Search Engine** using Chroma
+- 🔍 **Vector Search Engine** using Chroma and FAISS (multi-retriever support)
+- 🧩 **Modular Retriever Registry**: Plug in new sources (docs, web, SQL, etc.)
 - 📄 **Document Ingestion** (.txt, .pdf supported)
 - 🧠 **Retrieval-Augmented Generation** with OpenAI GPT-3.5
 - ⚡ **FastAPI backend** with interactive Swagger UI
-- 🔐 **Environment-based API key security**
+- 🔐 **JWT-based Authentication** (OAuth2 standard, secure endpoints)
+- 🖥️ **Next.js Frontend** (TypeScript, Tailwind, App Router)
 - 🧪 **Production-grade Pytest suite** covering all endpoints and edge cases
 - 🚦 **Standard RESTful error handling** (400, 401, 422, 200)
 - 📦 **Modular Python structure** ready for production
+- 🏷️ **Rich Source Attribution** (each answer cites its retrievers, files, and URLs)
+- 🚀 **CI-ready**: Robust, contract-driven tests and GitHub Actions
 
 ---
 
@@ -25,10 +29,12 @@ A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chr
 | Layer      | Technology                              |
 |------------|-----------------------------------------|
 | API Server | FastAPI                                 |
-| LLM        | OpenAI GPT-3.5                          |
+| LLM        | OpenAI GPT-3.5 (langchain-openai)       |
 | Embeddings | OpenAIEmbeddings via langchain-openai   |
-| Vector DB  | ChromaDB                                |
+| Vector DB  | ChromaDB, FAISS                         |
 | Loaders    | langchain_community.document_loaders    |
+| Auth       | OAuth2, JWT                             |
+| Frontend   | Next.js, TypeScript, Tailwind CSS       |
 
 ---
 
@@ -38,13 +44,23 @@ A blazing-fast, RAG-powered backend built with **FastAPI**, **LangChain**, **Chr
 ai-automation-backend/
 │
 ├── app/
-│   ├── main.py           # FastAPI app and endpoints
-│   ├── models.py         # Pydantic request/response schemas
-│   ├── vectorstore.py    # Vector store logic
-│   └── docs/             # Drop your .txt and .pdf files here
+│   ├── main.py                # FastAPI app and endpoints (now with JWT & modular retrievers)
+│   ├── query_models.py        # Pydantic request/response schemas (was models.py)
+│   ├── auth.py                # Auth logic and demo user db
+│   ├── retrievers/            # Modular retriever implementations (chroma, faiss, mock, etc)
+│   ├── vectorstore.py         # Vector store logic
+│   ├── docs/                  # Drop your .txt and .pdf files here
+│   ├── models/                # Data models (source_of_truth, etc)
+│   └── ...
 │
-├── tests/                # 🧪 Pytest API contract tests
-├── .env                  # Contains your OPENAI_API_KEY
+├── frontend/
+│   ├── app/                   # Next.js (TypeScript, App Router)
+│   ├── components/            # UI components (AskForm, LoginForm, etc)
+│   ├── utils/                 # API functions (askBackend, login)
+│   └── ...
+│
+├── tests/                     # 🧪 Pytest API contract tests
+├── .env                       # Contains your OPENAI_API_KEY, DEMO_USER, DEMO_PASS, JWT_SECRET_KEY
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -64,7 +80,8 @@ ai-automation-backend/
   ```bash
   python -m venv .venv
   ```
-  Activate it:
+
+3. **Activate it:**
 
   **Windows**
   ```bash
@@ -76,31 +93,63 @@ ai-automation-backend/
   source .venv/bin/activate
   ```
 
-3. **Install dependencies**
+4. **Install dependencies**
   ```bash
   pip install -r requirements.txt
   ```
 
-4. **Create a `.env` file in the root**
+5. **Create a .env file in the root**
 
-  Add your OpenAI API key:
+  Add your keys and demo user credentials:
   ```ini
   OPENAI_API_KEY=your_openai_key_here
+  DEMO_USER=demo
+  DEMO_PASS=test123
+  JWT_SECRET_KEY=your_jwt_secret
   ```
 
-5. **Start the server**
+6. **Start the server**
   ```bash
   uvicorn app.main:app --reload
   ```
 
-6. **Open your browser**
+7. **Open your browser**
 
-  Visit: [http://localhost:8000/docs](http://localhost:8000/docs)  
-  Use the Swagger UI to query your documents.
+  Visit: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+  Use the Swagger UI to test endpoints, get tokens, and query your documents.
 
 ---
 
-## 🧪 API Testing & Quality
+### 🖥️ Frontend (Next.js + TypeScript + Tailwind)
+
+1. **Navigate to the frontend directory**
+  ```bash
+  cd frontend
+  ```
+
+2. **Install dependencies**
+  ```bash
+  npm install
+  ```
+
+3. **Start the frontend dev server**
+  ```bash
+  npm run dev
+  ```
+
+4. **Open [http://localhost:3000](http://localhost:3000) in your browser.**
+
+5. **Login with demo credentials**
+
+  - Username: `demo`
+  - Password: `test123`
+
+  Copy/paste your JWT for protected endpoints, or use the built-in login form.
+
+---
+
+### 🧪 API Testing & Quality
 
 All endpoints are covered by a robust Pytest suite:
 
@@ -111,19 +160,17 @@ All endpoints are covered by a robust Pytest suite:
 
 Test suite checks status codes and API contracts:
 
-- **401 Unauthorized** for invalid login
-- **400 Bad Request** for missing/blank fields
-- **422 Unprocessable Entity** for empty questions
-- **200 OK** for successful calls
+- `401 Unauthorized` for invalid login
+- `400 Bad Request` for missing/blank fields
+- `422 Unprocessable Entity` for empty questions
+- `200 OK` for successful calls
 
 **CI/CD ready:**
 
 - Tests pass locally and in GitHub Actions
 - Every change must be testable, reproducible, and contract-aligned
 
----
-
-## 🏃‍♂️ Run Tests
+#### 🏃‍♂️ Run Tests
 
 ```bash
 pytest -v tests/
@@ -131,7 +178,7 @@ pytest -v tests/
 
 ---
 
-## 📥 Adding Documents
+### 📥 Adding Documents
 
 Just drop `.txt` or `.pdf` files into the `app/docs/` directory. The app will:
 
@@ -144,9 +191,10 @@ No manual indexing required.
 
 ---
 
-## ❓ Ask Your Data
+### ❓ Ask Your Data
 
-**Example query:**
+Example query:
+
 ```json
 {
   "question": "What is a vector database and why is it useful?"
@@ -155,25 +203,26 @@ No manual indexing required.
 
 The app will:
 
-1. Search your document collection for relevant chunks
-2. Insert those chunks as context into a prompt
-3. Send the prompt to OpenAI
-4. Return an intelligent answer + the source context
+- Search your document collection for relevant chunks
+- Insert those chunks as context into a prompt
+- Send the prompt to OpenAI
+- Return an intelligent answer + the source context
 
-**Example response:**
+Example response:
+
 ```json
 {
   "answer": "Vector databases improve performance for AI by enabling similarity search and handling high-dimensional data efficiently.",
   "matched_docs": [
-  "Beginner’s Guide to Vector Databases -AI by Hand",
-  "FastAPI Type Hints and Swagger UI Integration"
+   "Beginner’s Guide to Vector Databases -AI by Hand",
+   "FastAPI Type Hints and Swagger UI Integration"
   ]
 }
 ```
 
 ---
 
-## 🚦 Error Handling & API Contract
+### 🚦 Error Handling & API Contract
 
 All API endpoints follow standard REST conventions:
 
@@ -181,50 +230,52 @@ All API endpoints follow standard REST conventions:
 |-------------|------------------------------------------|
 | 200         | Success                                  |
 | 400         | Missing required fields (e.g. blank login)|
-| 401         | Invalid credentials or unauthorized      |
-| 422         | Invalid input (e.g. empty question)      |
+| 401         | Invalid credentials or unauthorized       |
+| 422         | Invalid input (e.g. empty question)       |
 
 Any contract change will cause tests to fail—preventing accidental regressions.
 
 All errors return a clear JSON message:
+
 ```json
 { "detail": "Error message here" }
 ```
 
 ---
 
-## 🧱 Built For Expansion
+### 🧱 Built For Expansion
 
-This is just the backend. Future upgrades could include:
-
-- Web frontend (React, Svelte, etc.)
+- Web frontend (React/Next.js—already included!)
+- Plug in new retrievers (SQL, web search, more vector DBs, API sources)
 - File upload via API
 - Streamed token-by-token responses
 - Fine-tuned models or local LLMs (e.g. Ollama, LM Studio)
 - Multi-user support with authentication
 - Metadata tagging and filters
+- Analytics dashboard, admin UX, chat UX, and resume generator
 
 ---
 
-## 🧠 Author
+### 🧠 Author
 
-**Philip GeLinas**  
+Philip GeLinas  
 AI-Enhanced SDET & Automation Engineer  
 GitHub: [@javabash](https://github.com/javabash)
 
 ---
 
-## 📘 Acknowledgments
+### 📘 Acknowledgments
 
 - LangChain
 - Chroma
+- FAISS
 - OpenAI
 - FastAPI
+- Next.js
 
 ---
 
-## ⚖️ License
+### ⚖️ License
 
-**MIT** — do whatever you want, just don't forget to build cool stuff.
+MIT — do whatever you want, just don't forget to build cool stuff.
 
----

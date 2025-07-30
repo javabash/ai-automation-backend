@@ -13,3 +13,18 @@ __pycache__/
 # Bytecode
 *.pyc
 app/chroma_db/
+
+# macOS
+.DS_Store
+
+# Test, build, and coverage artifacts
+htmlcov/
+.coverage
+*.log
+
+# Node.js (if you use npm/yarn in frontend)
+node_modules/
+frontend/node_modules/
+
+# General OS
+Thumbs.db

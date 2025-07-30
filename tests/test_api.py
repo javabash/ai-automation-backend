@@ -3,7 +3,7 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app  # Update path if your app import is different
+from app.main import app
 
 
 # --------- Fixtures ---------
@@ -78,7 +78,7 @@ def test_ask_empty_question(client):
 
 
 def test_ask_valid(client):
-    """Test authenticated /ask returns expected structure"""
+    """Test authenticated /ask returns expected structure (default retrievers)"""
     token = get_token(client)
     headers = {"Authorization": f"Bearer {token}"}
     question = {"question": "What is vector search?"}
@@ -86,7 +86,29 @@ def test_ask_valid(client):
     assert resp.status_code == 200
     data = resp.json()
     assert "answer" in data
-    assert "matched_docs" in data
+    assert "sources" in data
+    assert isinstance(data["sources"], list)
+    if data["sources"]:
+        for s in data["sources"]:
+            assert "type" in s
+            assert "snippet" in s
+
+
+def test_ask_multi_retriever(client):
+    """Test /ask with multiple sources param"""
+    token = get_token(client)
+    headers = {"Authorization": f"Bearer {token}"}
+    payload = {
+        "question": "Show my Python automation experience.",
+        "sources": ["mock", "chroma"],  # Use retrievers you have
+    }
+    resp = client.post("/ask", json=payload, headers=headers)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert "answer" in data
+    assert "sources" in data
+    assert isinstance(data["sources"], list)
+    assert len(data["sources"]) > 0
 
 
 # --------- Parameterized Edge/Role/Perf (Stubs) ---------
@@ -95,7 +117,6 @@ def test_ask_valid(client):
 @pytest.mark.parametrize("role", ["demo", "admin", "readonly"])
 def test_roles_future(client, role):
     """Stub for role-based access (expand when roles are implemented)"""
-    # Implement as role features are added
     pass
 
 

@@ -1,0 +1,75 @@
+{
+  "experiences": [
+    {
+      "id": "exp-mindera",
+      "title": "Technical Product Owner",
+      "employer": "Mindera",
+      "start_date": "2023-05",
+      "end_date": "2024-11",
+      "description": "Delivered a React-based commercial property platform (web/iOS/Android). Led Agile delivery, UI/UX, QA automation, and the GA release process.",
+      "skills": ["React", "FastAPI", "Scrum", "QA Automation", "Mobile", "Agile"],
+      "projects": ["proj-mindera-platform"],
+      "outcomes": ["Enhanced mobile engagement", "Streamlined QA/release process"],
+      "links": []
+    },
+    {
+      "id": "exp-tmobile",
+      "title": "Senior Engineering Analyst",
+      "employer": "T-Mobile",
+      "start_date": "2021-03",
+      "end_date": "2023-05",
+      "description": "Spearheaded cloud-based cybersecurity test automation platform. Automated 50% of audits. Integrated with ServiceNow. Led cross-functional Scrum team.",
+      "skills": ["Python", "Cloud", "ServiceNow", "Test Automation", "Scrum"],
+      "projects": ["proj-tmo-cyber"],
+      "outcomes": ["Reduced audit workload 50%", "Improved compliance"],
+      "links": []
+    },
+    {
+      "id": "exp-kroger",
+      "title": "E-Commerce Supervisor",
+      "employer": "Kroger",
+      "start_date": "2020-02",
+      "end_date": "2021-03",
+      "description": "Led 20-person team, drove flagship e-commerce rollout ($5M+ revenue).",
+      "skills": ["Team Leadership", "E-commerce", "Operations"],
+      "projects": [],
+      "outcomes": ["Successful online launch", "Revenue growth"],
+      "links": []
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-mindera-platform",
+      "name": "Commercial Property Platform",
+      "summary": "React, FastAPI, iOS/Android platform for managing and booking commercial properties.",
+      "tech_stack": ["React", "FastAPI", "iOS", "Android", "Jira", "Confluence"],
+      "outcomes": ["Improved mobile user engagement", "Modernized tech stack"],
+      "links": []
+    },
+    {
+      "id": "proj-tmo-cyber",
+      "name": "Cybersecurity Test Automation Platform",
+      "summary": "Cloud-native test automation with ServiceNow integration for compliance and audit automation.",
+      "tech_stack": ["Python", "ServiceNow", "Cloud", "Jira"],
+      "outcomes": ["Automated 50% of audit tasks", "Improved regulatory compliance"],
+      "links": []
+    }
+  ],
+  "skills": [
+    {"name": "Python", "type": "language", "proficiency": "expert", "evidence": ["exp-tmobile", "proj-tmo-cyber"]},
+    {"name": "React", "type": "framework", "proficiency": "advanced", "evidence": ["exp-mindera", "proj-mindera-platform"]},
+    {"name": "QA Automation", "type": "practice", "proficiency": "expert", "evidence": ["exp-mindera", "exp-tmobile"]},
+    {"name": "Scrum", "type": "practice", "proficiency": "expert", "evidence": ["exp-mindera", "exp-tmobile"]}
+  ],
+  "certifications": [
+    {"name": "Certified Product Owner (CPO)", "authority": "Scrum Alliance", "date": "2022-04"},
+    {"name": "Professional Scrum Product Owner (PSPO)", "authority": "Scrum.org", "date": "2022-05"},
+    {"name": "Certified Scrum Master (CSM)", "authority": "Scrum Alliance", "date": "2021-09"},
+    {"name": "Professional Scrum Master (PSM)", "authority": "Scrum.org", "date": "2021-10"},
+    {"name": "Tennessee Math / Science / Computer Science Teacher", "authority": "EWU", "date": "1995"}
+  ],
+  "education": [
+    {"degree": "MS in Science Education", "institution": "Eastern Washington University", "date": "1997"},
+    {"degree": "BA in Science Education", "institution": "Eastern Washington University", "date": "1995"}
+  ]
+}
